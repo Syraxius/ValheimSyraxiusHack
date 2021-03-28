@@ -1,7 +1,7 @@
 import time
 import logging
 import pymem
-from config import hack_table
+from configs.hack_table import hack_table
 from utils.helpers import toggle_hack, check_hack_state
 
 logger = logging.getLogger('pymem')
