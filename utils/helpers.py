@@ -1,40 +1,40 @@
 from utils.memory import pattern_scan_process
 
 
-def check_hack_state(pm, hack_table, hack):
-    hack_table[hack]['state'] = 'undefined'
-    pattern_bef = hack_table[hack]['pattern_bef']
-    pattern_aft = hack_table[hack]['pattern_aft']
+def check_hack_state(pm, hack_table, hack_name):
+    hack_table[hack_name]['state'] = 'undefined'
+    pattern_bef = hack_table[hack_name]['pattern_bef']
+    pattern_aft = hack_table[hack_name]['pattern_aft']
     address_bef = pattern_scan_process(pm.process_handle, pattern_bef)
     address_aft = pattern_scan_process(pm.process_handle, pattern_aft)
     if address_bef:
-        hack_table[hack]['last_address'] = address_bef
-        hack_table[hack]['state'] = 'off'
+        hack_table[hack_name]['last_address'] = address_bef
+        hack_table[hack_name]['state'] = 'off'
     elif address_aft:
-        hack_table[hack]['last_address'] = address_aft
-        hack_table[hack]['state'] = 'on'
-    return hack_table[hack]['state']
+        hack_table[hack_name]['last_address'] = address_aft
+        hack_table[hack_name]['state'] = 'on'
+    return hack_table[hack_name]['state']
 
 
-def toggle_hack(pm, hack_table, hack, toggle_on=True):
+def toggle_hack(pm, hack_table, hack_name, toggle_on=True):
     if toggle_on:
-        pattern = hack_table[hack]['pattern_bef']
-        value = hack_table[hack]['value_aft']
+        pattern = hack_table[hack_name]['pattern_bef']
+        value = hack_table[hack_name]['value_aft']
     else:
-        pattern = hack_table[hack]['pattern_aft']
-        value = hack_table[hack]['value_bef']
+        pattern = hack_table[hack_name]['pattern_aft']
+        value = hack_table[hack_name]['value_bef']
 
-    address = hack_table[hack].get('last_address')
+    address = hack_table[hack_name].get('last_address')
     if not address:
         address = pattern_scan_process(pm.process_handle, pattern)
         if address is None:
-            print('%s: Could not find pattern %s' % (hack, pattern))
+            print('%s: Could not find pattern %s' % (hack_name, pattern))
             return False
-    hack_table[hack]['last_address'] = address
+    hack_table[hack_name]['last_address'] = address
 
     pm.write_bytes(address, value, len(value))
     if toggle_on:
-        hack_table[hack]['state'] = 'on'
+        hack_table[hack_name]['state'] = 'on'
     else:
-        hack_table[hack]['state'] = 'off'
+        hack_table[hack_name]['state'] = 'off'
     return True

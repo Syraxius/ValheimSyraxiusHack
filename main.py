@@ -20,37 +20,39 @@ def main():
             print('%s process not found, have you started it? Retrying in 5 seconds')
             time.sleep(5)
 
-    hacks = sorted(hack_table.keys())
+    hacks_names = sorted(hack_table.keys())
 
     print('Checking state of all hacks...')
-    for hack in hacks:
-        hack_table[hack]['state'] = check_hack_state(pm, hack_table, hack)
+    for hack_name in hacks_names:
+        hack_table[hack_name]['state'] = check_hack_state(pm, hack_table, hack_name)
 
+    print()
     print('---------------------')
     print('Valheim Syraxius Hack')
     print('---------------------')
+    print()
     while True:
         print('==========')
         print('Hack Menu:')
         print('==========')
-        print('0. Exit')
-        id = 1
-        for hack in hacks:
-            print('%s. %s: %s' % (id, hack_table[hack]['name'], hack_table[hack]['state'].capitalize()))
-            if hack_table[hack]['state'] == 'undefined':
-                print('   Note: %s' % hack_table[hack]['undefined_help'])
-            id += 1
-        print('Toggle:')
+        hack_id = 1
+        for hack_name in hacks_names:
+            print('%s. %s: %s' % (hack_id, hack_table[hack_name]['name'], hack_table[hack_name]['state'].capitalize()))
+            if hack_table[hack_name]['state'] == 'undefined':
+                print('   Note: %s' % hack_table[hack_name]['undefined_help'])
+            hack_id += 1
+        print('Choice (0 to exit):')
         try:
             choice = int(input())
             if choice == 0:
                 break
-            if hack_table[hack]['state'] == 'on':
-                toggle_hack(pm, hack_table, hack, toggle_on=False)
+            hack_name = hacks_names[choice - 1]
+            if hack_table[hack_name]['state'] == 'on':
+                toggle_hack(pm, hack_table, hack_name, toggle_on=False)
             else:
-                success = toggle_hack(pm, hack_table, hack, toggle_on=True)
+                success = toggle_hack(pm, hack_table, hack_name, toggle_on=True)
                 if not success:
-                    print('There was an issue toggling this hack, try again.')
+                    print('There was an issue toggling this hack_name, try again.')
         except:
             print('Invalid input, try again.')
 
