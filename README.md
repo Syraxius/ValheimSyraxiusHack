@@ -7,6 +7,7 @@
 
 ## Features:
 - Undetected as of `28 March 2021`, `Valheim 0.148.6`
+- Unlimited Health (God mode)
 - Unlimited Stamina
 
 ## Usage (Windows):
